@@ -24,6 +24,11 @@ public class ContactCreationTests {
     initContactCreation();
     fillContactFrom(new ContactData("John", "Smith", "somewhere", "john.smith@somewhere.org"));
     submitContactCreation();
+    returnToHomePage();
+  }
+
+  private void returnToHomePage() {
+    wd.findElement(By.linkText("home page")).click();
   }
 
   private void submitContactCreation() {

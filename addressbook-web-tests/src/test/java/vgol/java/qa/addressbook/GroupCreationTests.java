@@ -36,10 +36,10 @@ public class GroupCreationTests {
     initCreateGroup();
     fillGroupForm(new GroupData("group0", "text", "text"));
     submitGroupCreation();
-    returnGroupPage();
+    returnToGroupPage();
   }
 
-  private void returnGroupPage() {
+  private void returnToGroupPage() {
     wd.findElement(By.linkText("group page")).click();
   }
 
