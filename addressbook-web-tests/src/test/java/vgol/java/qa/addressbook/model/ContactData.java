@@ -1,4 +1,4 @@
-package vgol.java.qa.addressbook;
+package vgol.java.qa.addressbook.model;
 
 public class ContactData {
   private final String firstname;
