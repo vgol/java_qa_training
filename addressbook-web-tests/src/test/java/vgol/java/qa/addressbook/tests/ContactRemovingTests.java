@@ -10,5 +10,6 @@ public class ContactRemovingTests extends TestBase {
     app.getContactHelper().selectContact();
     app.getContactHelper().clickEditOnElement();
     app.getContactHelper().deleteContactFromEdit();
+    app.getContactHelper().submitContactModification();
   }
 }
