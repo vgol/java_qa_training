@@ -18,7 +18,6 @@ public class ApplicationManager {
   private NavigationHelper navigationHelper;
   private ContactHelper contactHelper;
   private GroupHelper groupHelper;
-  private SessionHelper sessionHelper;
   private String browser;
 
   public ApplicationManager(String browser) {
@@ -35,11 +34,11 @@ public class ApplicationManager {
   }
 
   public void init() {
-    if (browser == BrowserType.FIREFOX) {
+    if (browser.equals(BrowserType.FIREFOX)) {
       wd = new FirefoxDriver();
-    } else if (browser == BrowserType.CHROME) {
+    } else if (browser.equals(BrowserType.CHROME)) {
       wd = new ChromeDriver();
-    } else if (browser == BrowserType.EDGE) {
+    } else if (browser.equals(BrowserType.EDGE)) {
       // Driver is not stable yet. There may be problems.
       File edgewd = new File("c:/tools/MicrosoftWebDriver.exe");
       System.setProperty("webdriver.edge.driver", edgewd.getAbsolutePath());
@@ -49,7 +48,7 @@ public class ApplicationManager {
     wd.get("http://localhost:8080/addressbook");
     groupHelper = new GroupHelper(wd);
     contactHelper = new ContactHelper(wd);
-    sessionHelper = new SessionHelper(wd);
+    SessionHelper sessionHelper = new SessionHelper(wd);
     navigationHelper = new NavigationHelper(wd);
     sessionHelper.login("admin", "secret");
   }
