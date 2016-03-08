@@ -23,4 +23,23 @@ public class EquationTests {
     Equation e = new Equation(1, 5, 6);
     Assert.assertEquals(e.rootNum(), 2);
   }
+
+  @Test
+  public void testLinear() {
+    Equation e = new Equation(0, 1, 1);
+    Assert.assertEquals(e.rootNum(), 1);
+  }
+
+  @Test
+  public void testConst() {
+    Equation e = new Equation(0, 0, 5);
+    Assert.assertEquals(e.rootNum(), 0);
+  }
+
+  @Test
+  public void testZero() {
+    Equation e = new Equation(0, 0, 0);
+    Assert.assertEquals(e.rootNum(), -1);
+  }
+
 }
