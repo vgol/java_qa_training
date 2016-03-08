@@ -44,7 +44,7 @@ public class ApplicationManager {
       System.setProperty("webdriver.edge.driver", edgewd.getAbsolutePath());
       wd = new EdgeDriver();
     }
-    wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+    wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     wd.get("http://localhost:8080/addressbook");
     groupHelper = new GroupHelper(wd);
     contactHelper = new ContactHelper(wd);
