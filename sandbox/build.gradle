@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'application'
-mainClassName = "vgol.java.qa.sandbox.MyFirstProgram"
 
 repositories {
     mavenCentral()
