@@ -1,14 +1,27 @@
 package vgol.java.qa.addressbook.model;
 
 public class GroupData {
+  private final String id;
   private final String groupname;
   private final String header;
   private final String footer;
 
   public GroupData(String groupname, String header, String footer) {
+    this.id = null;
     this.groupname = groupname;
     this.header = header;
     this.footer = footer;
+  }
+
+  public GroupData(String id, String groupname, String header, String footer) {
+    this.id = id;
+    this.groupname = groupname;
+    this.header = header;
+    this.footer = footer;
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getGroupname() {
@@ -27,6 +40,7 @@ public class GroupData {
   public String toString() {
     return "GroupData{" +
         "groupname='" + groupname + '\'' +
+        ", id='" + id + '\'' +
         '}';
   }
 
@@ -37,12 +51,16 @@ public class GroupData {
 
     GroupData groupData = (GroupData) o;
 
-    return groupname != null ? groupname.equals(groupData.groupname) : groupData.groupname == null;
+    if (getId() != null ? !getId().equals(groupData.getId()) : groupData.getId() != null)
+      return false;
+    return getGroupname() != null ? getGroupname().equals(groupData.getGroupname()) : groupData.getGroupname() == null;
 
   }
 
   @Override
   public int hashCode() {
-    return groupname != null ? groupname.hashCode() : 0;
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getGroupname() != null ? getGroupname().hashCode() : 0);
+    return result;
   }
 }
