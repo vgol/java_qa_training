@@ -60,12 +60,8 @@ public class GroupHelper extends HelperBase {
     return isElementPresent(By.name("selected[]"));
   }
 
-  public int elementsCount() {
-    return wd.findElements(By.name("selected[]")).size();
-  }
-
   public List<GroupData> getGroupList() {
-    List<GroupData> groups = new ArrayList<GroupData>();
+    List<GroupData> groups = new ArrayList<>();
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     for (WebElement element : elements) {
       String name = element.getText();
