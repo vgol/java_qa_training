@@ -8,6 +8,8 @@ import java.util.List;
 
 public class ContactRemovingTests extends TestBase {
 
+
+
   @Test
   public void testContactRemoving() {
     app.getNavigationHelper().gotoHomePage();
