@@ -12,7 +12,7 @@ public class ContactRemovingTests extends TestBase {
 
   @Test
   public void testContactRemoving() {
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().gotoHomePage();
     if (! app.getContactHelper().isThereAContact()) {
       app.getContactHelper().createContact(new ContactData("John", "Smith", "somewhere", "john.smith@somewhere.org"));
     }
@@ -20,7 +20,7 @@ public class ContactRemovingTests extends TestBase {
     app.getContactHelper().selectContact();
     app.getContactHelper().deleteContact();
     app.getContactHelper().alertAccept();
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().gotoHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();
     Assert.assertEquals(after.size(), before.size() - 1);
 
@@ -30,7 +30,7 @@ public class ContactRemovingTests extends TestBase {
 
   @Test
   public void testContactRemovingFromEdit() {
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().gotoHomePage();
     if (! app.getContactHelper().isThereAContact()) {
       app.getContactHelper().createContact(new ContactData("John", "Smith", "somewhere", "john.smith@somewhere.org"));
     }
@@ -38,7 +38,7 @@ public class ContactRemovingTests extends TestBase {
     app.getContactHelper().selectContact();
     app.getContactHelper().clickEditOnElement();
     app.getContactHelper().deleteContactFromEdit();
-    app.getNavigationHelper().gotoHomePage();
+    app.goTo().gotoHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();
     Assert.assertEquals(after.size(), before.size() - 1);
 
