@@ -13,7 +13,8 @@ public class GroupRemovingTests extends TestBase {
   public void ensurePrecondition() {
     app.goTo().groupPage();
     if (app.group().list().size() == 0) {
-      app.group().create(new GroupData("group0", "text", "text"));
+      app.group().create(new GroupData()
+          .withName("group0").withHeader("text").withFooter("text"));
     }
   }
 
