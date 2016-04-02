@@ -1,27 +1,13 @@
 package vgol.java.qa.addressbook.model;
 
 public class ContactData {
-  private final int id;
-  private final String firstname;
-  private final String lastname;
-  private final String address;
-  private final String email;
 
-  public ContactData(String firstname, String lastname, String address, String email) {
-    this.id = Integer.MAX_VALUE;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.address = address;
-    this.email = email;
-  }
+  private int id = Integer.MAX_VALUE;
+  private String firstname;
+  private String lastname;
+  private String address;
+  private String email;
 
-  public ContactData(int id, String firstname, String lastname, String address, String email) {
-    this.id = id;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.address = address;
-    this.email = email;
-  }
 
   public String getFirstname() {
     return firstname;
@@ -43,6 +29,32 @@ public class ContactData {
     return id;
   }
 
+  public ContactData withId(int id) {
+    this.id = id;
+    return this;
+  }
+
+  public ContactData withFirstname(String firstname) {
+    this.firstname = firstname;
+    return this;
+
+  }
+
+  public ContactData withLastname(String lastname) {
+    this.lastname = lastname;
+    return this;
+  }
+
+  public ContactData withAddress(String address) {
+    this.address = address;
+    return this;
+  }
+
+  public ContactData withEmail(String email) {
+    this.email = email;
+    return this;
+  }
+
   @Override
   public String toString() {
     return "ContactData{" +
@@ -59,6 +71,8 @@ public class ContactData {
 
     ContactData that = (ContactData) o;
 
+    if (id != that.id) return false;
+    //noinspection SimplifiableIfStatement
     if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
     return lastname != null ? lastname.equals(that.lastname) : that.lastname == null;
 
@@ -66,7 +80,8 @@ public class ContactData {
 
   @Override
   public int hashCode() {
-    int result = firstname != null ? firstname.hashCode() : 0;
+    int result = id;
+    result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
     result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
     return result;
   }
