@@ -1,7 +1,6 @@
 package vgol.java.qa.addressbook.appmanager;
 
 
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
 
-  WebDriver wd;
+  private WebDriver wd;
 
   private NavigationHelper navigationHelper;
   private ContactHelper contactHelper;
@@ -24,25 +23,20 @@ public class ApplicationManager {
     this.browser = browser;
   }
 
-  public static boolean isAlertPresent(WebDriver wd) {
-    try {
-      wd.switchTo().alert();
-      return true;
-    } catch (NoAlertPresentException e) {
-      return false;
-    }
-  }
-
   public void init() {
-    if (browser.equals(BrowserType.FIREFOX)) {
-      wd = new FirefoxDriver();
-    } else if (browser.equals(BrowserType.CHROME)) {
-      wd = new ChromeDriver();
-    } else if (browser.equals(BrowserType.EDGE)) {
-      // Driver is not stable yet. There may be problems.
-      File edgewd = new File("c:/tools/MicrosoftWebDriver.exe");
-      System.setProperty("webdriver.edge.driver", edgewd.getAbsolutePath());
-      wd = new EdgeDriver();
+    switch (browser) {
+      case BrowserType.FIREFOX:
+        wd = new FirefoxDriver();
+        break;
+      case BrowserType.CHROME:
+        wd = new ChromeDriver();
+        break;
+      case BrowserType.EDGE:
+        // Driver is not stable yet. There may be problems.
+        File edgewd = new File("c:/tools/MicrosoftWebDriver.exe");
+        System.setProperty("webdriver.edge.driver", edgewd.getAbsolutePath());
+        wd = new EdgeDriver();
+        break;
     }
     wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     wd.get("http://localhost:8080/addressbook");
