@@ -7,15 +7,15 @@ import org.openqa.selenium.WebElement;
 import vgol.java.qa.addressbook.model.GroupData;
 import vgol.java.qa.addressbook.model.Groups;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GroupHelper extends HelperBase {
 
   GroupHelper(WebDriver wd) {
     super(wd);
   }
+
+  private Groups groupCache = null;
 
   private void returnToGroupPage() {
     click(By.linkText("group page"));
@@ -55,6 +55,7 @@ public class GroupHelper extends HelperBase {
     initCreateGroup();
     fillGroupForm(group);
     submitGroupCreation();
+    groupCache = null;
     returnToGroupPage();
   }
 
@@ -63,24 +64,30 @@ public class GroupHelper extends HelperBase {
     initModificationGroup();
     fillGroupForm(group);
     submitGroupModification();
+    groupCache = null;
     returnToGroupPage();
   }
 
   public void delete(GroupData group) {
     selectGroupById(group.getId());
     deleteGroup();
+    groupCache = null;
     returnToGroupPage();
   }
 
   public Groups all() {
-    Groups groups = new Groups();
+    if (groupCache != null) {
+      return new Groups(groupCache);
+    }
+
+    groupCache = new Groups();
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
     for (WebElement element : elements) {
       String name = element.getText();
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       GroupData group = new GroupData().withId(id).withName(name);
-      groups.add(group);
+      groupCache.add(group);
     }
-    return groups;
+    return new Groups(groupCache);
   }
 }
