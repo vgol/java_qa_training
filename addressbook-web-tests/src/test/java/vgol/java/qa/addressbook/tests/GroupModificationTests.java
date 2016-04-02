@@ -1,12 +1,13 @@
 package vgol.java.qa.addressbook.tests;
 
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vgol.java.qa.addressbook.model.GroupData;
+import vgol.java.qa.addressbook.model.Groups;
 
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupModificationTests extends TestBase {
 
@@ -20,7 +21,7 @@ public class GroupModificationTests extends TestBase {
 
   @Test
   public void testGroupModification() {
-    Set<GroupData> before = app.group().all();
+    Groups before = app.group().all();
     GroupData modifiedGroup = before.iterator().next();
     GroupData group = new GroupData()
         .withId(modifiedGroup.getId())
@@ -28,11 +29,8 @@ public class GroupModificationTests extends TestBase {
         .withHeader("alt text")
         .withFooter("alt text");
     app.group().modify(group);
-    Set<GroupData> after = app.group().all();
-    Assert.assertEquals(before.size(), after.size());
-
-    before.remove(modifiedGroup);
-    before.add(group);
-    Assert.assertEquals(before,after);
+    Groups after = app.group().all();
+    assertThat(after.size(), equalTo(before.size()));
+    assertThat(after, equalTo(before.without(modifiedGroup).withAdded(group)));
   }
 }
