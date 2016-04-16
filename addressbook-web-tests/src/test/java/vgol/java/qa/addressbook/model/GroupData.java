@@ -10,7 +10,7 @@ public class GroupData {
     return id;
   }
 
-  public String getGroupname() {
+  public String getName() {
     return name;
   }
 

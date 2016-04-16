@@ -17,3 +17,4 @@ gradle-app.setting
 java_qa_training.iml
 /addressbook-web-tests/addressbook-web-tests.iml
 /sandbox/sandbox.iml
+/addressbook-web-tests/src/test/resources
