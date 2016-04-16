@@ -17,7 +17,10 @@ public class ContactCreationTests extends TestBase {
         .withFirstname("John")
         .withLastname("Smith")
         .withAddress("somewhere")
-        .withEmail("john.smith@somewhere.org");
+        .withEmail("john.smith@somewhere.org")
+        .withHomePhone("+7 (495) 222 33 44")
+        .withMobilePhone("89263332221")
+        .withWorkPhone("333-66-88");
     app.contact().create(contact);
     Contacts after = app.contact().all();
     assertThat(after.size(), equalTo(before.size() + 1));

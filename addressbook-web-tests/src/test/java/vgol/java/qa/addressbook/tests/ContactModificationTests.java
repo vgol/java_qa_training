@@ -19,7 +19,10 @@ public class ContactModificationTests extends TestBase {
           .withFirstname("Johm")
           .withLastname("Smith")
           .withAddress("somewhere")
-          .withEmail("john.smith@somewhere.org"));
+          .withEmail("john.smith@somewhere.org")
+          .withHomePhone("+7 (495) 222 33 44")
+          .withMobilePhone("89263332221")
+          .withWorkPhone("333-66-88"));
     }
   }
 
@@ -32,7 +35,10 @@ public class ContactModificationTests extends TestBase {
         .withFirstname("Drizzt")
         .withLastname("DoUrden")
         .withAddress("Menzoberanzan")
-        .withEmail("drizzt@menzoberanzan");
+        .withEmail("drizzt@menzoberanzan")
+        .withHomePhone("+7 (495) 222 33 44")
+        .withMobilePhone("89263332221")
+        .withWorkPhone("333-66-88");
     app.contact().modify(contact);
     Contacts after = app.contact().all();
     assertThat(after.size(), equalTo(before.size()));

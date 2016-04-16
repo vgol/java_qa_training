@@ -18,7 +18,10 @@ public class ContactRemovingTests extends TestBase {
           .withFirstname("Johm")
           .withLastname("Smith")
           .withAddress("somewhere")
-          .withEmail("john.smith@somewhere.org"));
+          .withEmail("john.smith@somewhere.org")
+          .withHomePhone("+7 (495) 222 33 44")
+          .withMobilePhone("89263332221")
+          .withWorkPhone("333-66-88"));
     }
   }
 
