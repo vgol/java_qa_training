@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 import vgol.java.qa.addressbook.model.ContactData;
 
 import java.util.Arrays;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
