@@ -45,10 +45,6 @@ public class ContactHelper extends HelperBase {
     click(By.xpath("//div[@id='content']/form[2]/input[2]"));
   }
 
-  private void clickEditOnElement() {
-    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
-  }
-
   private void submitContactModification() {
     click(By.xpath("//div[@id='content']/form[1]/input[22]"));
   }
@@ -74,15 +70,13 @@ public class ContactHelper extends HelperBase {
     alertAccept();
   }
 
-  public void deleteFromEdit(ContactData deletedContact) {
-    selectContactById(deletedContact.getId());
-    clickEditOnElement();
+  public void deleteFromEdit(ContactData contact) {
+    initContactModificationById(contact.getId());
     deleteContactFromEdit();
   }
 
   public void modify(ContactData contact) {
-    selectContactById(contact.getId());
-    clickEditOnElement();
+    initContactModificationById(contact.getId());
     fillContactFrom(contact);
     submitContactModification();
     returnToHomePage();
