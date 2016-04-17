@@ -4,6 +4,7 @@ package vgol.java.qa.addressbook.generators;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.thoughtworks.xstream.XStream;
 import vgol.java.qa.addressbook.model.GroupData;
 
 import java.io.File;
@@ -21,6 +22,9 @@ public class GroupDataGenerator {
   @Parameter(names = "-f", description = "Target file")
   public String file;
 
+  @Parameter(names = "-d", description = "Data format")
+  public String format;
+
 
   public static void main(String[] args) throws IOException {
     GroupDataGenerator generator = new GroupDataGenerator();
@@ -36,10 +40,29 @@ public class GroupDataGenerator {
 
   private void run() throws IOException {
     List<GroupData> groups = generateGroups(count);
-    save(groups, new File(file));
+    switch (format) {
+      case "csv":
+        saveAsCsv(groups, new File(file));
+        break;
+      case "xml":
+        saveAsXml(groups, new File(file));
+        break;
+      default:
+        System.out.printf(String.format("Unrecognized format %s", format));
+        break;
+    }
   }
 
-  private static void save(List<GroupData> groups, File file) throws IOException {
+  private void saveAsXml(List<GroupData> groups, File file) throws IOException {
+    XStream xStream = new XStream();
+    xStream.processAnnotations(GroupData.class);
+    String xml = xStream.toXML(groups);
+    Writer writer = new FileWriter(file);
+    writer.write(xml);
+    writer.close();
+  }
+
+  private void saveAsCsv(List<GroupData> groups, File file) throws IOException {
     Writer writer = new FileWriter(file);
     for (GroupData group : groups) {
       writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
@@ -48,7 +71,7 @@ public class GroupDataGenerator {
   }
 
 
-  private static List<GroupData> generateGroups(int count) {
+  private List<GroupData> generateGroups(int count) {
     List<GroupData> groups = new ArrayList<>();
     for (int i = 0; i < count; i++) {
       groups.add(new GroupData().withName(String.format("group%s", i))
