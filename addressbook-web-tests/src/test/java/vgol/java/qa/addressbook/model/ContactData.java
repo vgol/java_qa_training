@@ -1,31 +1,60 @@
 package vgol.java.qa.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
 
+  @Id
   private int id = Integer.MAX_VALUE;
+
   @Expose
   private String firstname;
+
   @Expose
   private String lastname;
+
   @Expose
+  @Type(type = "text")
   private String address;
+
   @Expose
+  @Type(type = "text")
   private String email;
+
   @Expose
+  @Type(type = "text")
   private String email2;
+
   @Expose
+  @Type(type = "text")
   private String email3;
+
   @Expose
+  @Column(name = "home")
+  @Type(type = "text")
   private String homePhone;
+
   @Expose
+  @Column(name = "mobile")
+  @Type(type = "text")
   private String mobilePhone;
+
   @Expose
+  @Column(name = "work")
+  @Type(type = "text")
   private String workPhone;
+
   @Expose
+  @Transient
   private String allPhones;
+
   @Expose
+  @Transient
   private String allEmails;
 
 
@@ -71,6 +100,27 @@ public class ContactData {
 
   public String getAllPhones() {
     return allPhones;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ContactData that = (ContactData) o;
+
+    if (id != that.id) return false;
+    if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
+    return lastname != null ? lastname.equals(that.lastname) : that.lastname == null;
+
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id;
+    result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
+    result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
+    return result;
   }
 
   public String getAllEmails() {
@@ -147,25 +197,4 @@ public class ContactData {
         '}';
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    ContactData that = (ContactData) o;
-
-    if (id != that.id) return false;
-    //noinspection SimplifiableIfStatement
-    if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
-    return lastname != null ? lastname.equals(that.lastname) : that.lastname == null;
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id;
-    result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
-    result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
-    return result;
-  }
 }
