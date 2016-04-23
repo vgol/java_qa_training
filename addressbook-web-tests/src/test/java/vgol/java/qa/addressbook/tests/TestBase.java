@@ -4,6 +4,8 @@ import org.openqa.selenium.remote.BrowserType;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import vgol.java.qa.addressbook.appmanager.ApplicationManager;
+import vgol.java.qa.addressbook.model.ContactData;
+import vgol.java.qa.addressbook.model.Contacts;
 import vgol.java.qa.addressbook.model.GroupData;
 import vgol.java.qa.addressbook.model.Groups;
 
@@ -35,5 +37,19 @@ public class TestBase {
           .map((g) -> new GroupData().withId(g.getId()).withName(g.getName()))
           .collect(Collectors.toSet())));
     }
+  }
+
+  void verifyContactListInUi() {
+    if (Boolean.getBoolean("verifyUI")) {
+      Contacts dbContacts = app.db().contacts();
+      Contacts uiContacts = app.contact().all();
+      assertThat(uiContacts.stream().map(TestBase::simplifyContacts).collect(Collectors.toSet()),
+          equalTo(dbContacts.stream().map(TestBase::simplifyContacts).collect(Collectors.toSet())));
+    }
+  }
+
+  private static ContactData simplifyContacts(ContactData contact) {
+    return new ContactData().withId(contact.getId()).withFirstname(contact.getFirstname())
+        .withLastname(contact.getLastname()).withAddress(contact.getAddress());
   }
 }

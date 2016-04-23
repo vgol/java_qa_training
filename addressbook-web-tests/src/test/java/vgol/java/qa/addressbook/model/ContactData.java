@@ -115,8 +115,6 @@ public class ContactData {
         ", homePhone='" + homePhone + '\'' +
         ", mobilePhone='" + mobilePhone + '\'' +
         ", workPhone='" + workPhone + '\'' +
-        ", allPhones='" + allPhones + '\'' +
-        ", allEmails='" + allEmails + '\'' +
         '}';
   }
 
