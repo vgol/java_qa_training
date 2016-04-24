@@ -4,8 +4,10 @@ package vgol.java.qa.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import vgol.java.qa.addressbook.model.ContactData;
 import vgol.java.qa.addressbook.model.Contacts;
+import vgol.java.qa.addressbook.model.GroupData;
 
 import java.util.List;
 
@@ -129,5 +131,12 @@ public class ContactHelper extends HelperBase {
 
   private void initContactInfoById(int id) {
     wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']", id))).click();
+  }
+
+  public void addToGroup(ContactData contact, GroupData group) {
+    selectContactById(contact.getId());
+    Select dropdown = new Select(wd.findElement(By.name("to_group")));
+    dropdown.selectByVisibleText(group.getName());
+    wd.findElement(By.name("add")).click();
   }
 }
