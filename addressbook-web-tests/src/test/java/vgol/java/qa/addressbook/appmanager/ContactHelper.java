@@ -133,10 +133,14 @@ public class ContactHelper extends HelperBase {
     wd.findElement(By.cssSelector(String.format("a[href='view.php?id=%s']", id))).click();
   }
 
-  public void addToGroup(ContactData contact, GroupData group) {
-    selectContactById(contact.getId());
+  public void addToGroup(int id, GroupData group) {
+    selectContactById(id);
     Select dropdown = new Select(wd.findElement(By.name("to_group")));
     dropdown.selectByVisibleText(group.getName());
     wd.findElement(By.name("add")).click();
+  }
+
+  public void showAllGroups() {
+    new Select(wd.findElement(By.name("group"))).selectByVisibleText("[all]");
   }
 }

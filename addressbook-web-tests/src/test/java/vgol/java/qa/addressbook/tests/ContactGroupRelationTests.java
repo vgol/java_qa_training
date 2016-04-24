@@ -4,10 +4,10 @@ package vgol.java.qa.addressbook.tests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vgol.java.qa.addressbook.model.ContactData;
-import vgol.java.qa.addressbook.model.Contacts;
 import vgol.java.qa.addressbook.model.GroupData;
 import vgol.java.qa.addressbook.model.Groups;
 
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -40,12 +40,28 @@ public class ContactGroupRelationTests extends TestBase {
 
   @Test
   public void testAddContactToGroup() {
+    app.goTo().homePage();
+    app.contact().showAllGroups();
     ContactData contact = app.db().contacts().iterator().next();
+    Groups groups = app.db().groups();
+    groups.removeAll(contact.getGroups());
+    // If chosen contact already in all groups, create new contact.
+    if (groups.size() == 0) {
+      contact = new ContactData()
+          .withFirstname("New")
+          .withLastname("Character")
+          .withAddress("somewhere")
+          .withEmail("new.character@somewhere.org")
+          .withHomePhone("+7 (495) 222 33 44")
+          .withMobilePhone("89263332221")
+          .withWorkPhone("333-66-88");
+      app.contact().create(contact);
+    }
     GroupData group = app.db().groups().iterator().next();
     Groups before = contact.getGroups();
-    app.goTo().homePage();
-    app.contact().addToGroup(contact, group);
-    Groups after = app.db().contacts().stream().filter((c) -> c.getId() == contact.getId())
+    app.contact().addToGroup(getMaxId(), group);
+    final int id = getMaxId();
+    Groups after = app.db().contacts().stream().filter((c) -> c.getId() == id)
         .collect(Collectors.toSet()).iterator().next().getGroups();
 
     assertThat(after.stream().map(ContactGroupRelationTests::compareJustNames).collect(Collectors.toSet()),
@@ -53,12 +69,20 @@ public class ContactGroupRelationTests extends TestBase {
             .map(ContactGroupRelationTests::compareJustNames).collect(Collectors.toSet())));
   }
 
+  @Test(enabled = false)
+  public void testRemoveContactFromGroup() {
+
+  }
+
   private static GroupData compareJustNames(GroupData group) {
     return new GroupData().withName(group.getName());
   }
 
-  @Test(enabled = false)
-  public void testRemoveContactFromGroup() {
-
+  private int getMaxId() {
+    OptionalInt maxId = app.db().contacts().stream().mapToInt(ContactData::getId).max();
+    if (maxId.isPresent()) {
+      return maxId.getAsInt();
+    }
+    return Integer.MAX_VALUE;
   }
 }

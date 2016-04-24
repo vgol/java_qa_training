@@ -227,5 +227,9 @@ public class ContactData {
     this.allEmails = allEmails;
     return this;
   }
-
+//
+//  public ContactData inGroup(GroupData group) {
+//    groups.add(group);
+//    return this;
+//  }
 }
