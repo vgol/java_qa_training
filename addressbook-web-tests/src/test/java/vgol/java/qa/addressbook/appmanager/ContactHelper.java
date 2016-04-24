@@ -140,7 +140,13 @@ public class ContactHelper extends HelperBase {
     wd.findElement(By.name("add")).click();
   }
 
-  public void showAllGroups() {
-    new Select(wd.findElement(By.name("group"))).selectByVisibleText("[all]");
+  public void showGroup(String name) {
+    new Select(wd.findElement(By.name("group"))).selectByVisibleText(name);
+  }
+
+  public void removeFromGroup(int id, GroupData group) {
+    showGroup(group.getName());
+    selectContactById(id);
+    wd.findElement(By.name("remove")).click();
   }
 }

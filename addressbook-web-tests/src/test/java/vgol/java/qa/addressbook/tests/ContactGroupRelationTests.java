@@ -41,7 +41,7 @@ public class ContactGroupRelationTests extends TestBase {
   @Test
   public void testAddContactToGroup() {
     app.goTo().homePage();
-    app.contact().showAllGroups();
+    app.contact().showGroup("[all]");
     ContactData contact = app.db().contacts().iterator().next();
     Groups groups = app.db().groups();
     groups.removeAll(contact.getGroups());
@@ -59,8 +59,8 @@ public class ContactGroupRelationTests extends TestBase {
     }
     GroupData group = app.db().groups().iterator().next();
     Groups before = contact.getGroups();
-    app.contact().addToGroup(getMaxId(), group);
     final int id = getMaxId();
+    app.contact().addToGroup(id, group);
     Groups after = app.db().contacts().stream().filter((c) -> c.getId() == id)
         .collect(Collectors.toSet()).iterator().next().getGroups();
 
@@ -69,9 +69,27 @@ public class ContactGroupRelationTests extends TestBase {
             .map(ContactGroupRelationTests::compareJustNames).collect(Collectors.toSet())));
   }
 
-  @Test(enabled = false)
+  @Test
   public void testRemoveContactFromGroup() {
+    app.goTo().homePage();
+    app.contact().showGroup("[all]");
+    ContactData contact = app.db().contacts().iterator().next();
+    if (contact.getGroups().size() == 0) {
+      app.contact().addToGroup(contact.getId(), app.db().groups().iterator().next());
+      app.goTo().homePage();
+    }
+    // Renew contact data.
+    final int id = contact.getId();
+    Groups before = app.db().contacts().stream().filter((c) -> c.getId() == id)
+        .collect(Collectors.toSet()).iterator().next().getGroups();
+    GroupData leavedGroup = before.iterator().next();
+    app.contact().removeFromGroup(contact.getId(), leavedGroup);
+    Groups after = app.db().contacts().stream().filter((c) -> c.getId() == id)
+        .collect(Collectors.toSet()).iterator().next().getGroups();
 
+    assertThat(after.stream().map(ContactGroupRelationTests::compareJustNames).collect(Collectors.toSet()),
+        equalTo(before.without(leavedGroup).stream()
+            .map(ContactGroupRelationTests::compareJustNames).collect(Collectors.toSet())));
   }
 
   private static GroupData compareJustNames(GroupData group) {
