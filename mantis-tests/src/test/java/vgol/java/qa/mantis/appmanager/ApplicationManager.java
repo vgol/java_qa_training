@@ -19,6 +19,7 @@ public class ApplicationManager {
   private WebDriver wd;
   private String browser;
   private RegistrationHelper registrationHelper;
+  private FtpHelper ftp;
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -40,7 +41,7 @@ public class ApplicationManager {
     return new HttpSession(this);
   }
 
-  public String getProperty(String key) {
+  String getProperty(String key) {
     return properties.getProperty(key);
   }
 
@@ -51,7 +52,7 @@ public class ApplicationManager {
     return registrationHelper;
   }
 
-  public WebDriver getDriver() {
+  WebDriver getDriver() {
     if (wd == null) {
       switch (browser) {
         case BrowserType.FIREFOX:
@@ -67,11 +68,19 @@ public class ApplicationManager {
           wd = new EdgeDriver();
           break;
       }
+      assert wd != null;
       wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
       wd.get(properties.getProperty("web.baseUrl"));
 
     }
     return wd;
+  }
+
+  public FtpHelper ftp() {
+    if (ftp == null) {
+      ftp = new FtpHelper(this);
+    }
+    return ftp;
   }
 }
 
