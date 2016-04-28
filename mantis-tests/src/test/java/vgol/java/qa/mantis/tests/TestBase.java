@@ -1,6 +1,7 @@
 package vgol.java.qa.mantis.tests;
 
 import org.openqa.selenium.remote.BrowserType;
+import org.testng.SkipException;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import ru.lanwen.verbalregex.VerbalExpression;
@@ -44,5 +45,15 @@ public class TestBase {
     MailMessage mailMessage = mailMessages.stream().filter((m) -> m.to.equals(email)).findFirst().get();
     VerbalExpression regex = VerbalExpression.regex().find("http://").nonSpace().oneOrMore().build();
     return regex.getText(mailMessage.text);
+  }
+
+  public void skipIfNotFixed(int issueId) {
+    if (isIssueOpen(issueId)) {
+      throw new SkipException("Ignored because of issue " + issueId);
+    }
+  }
+
+  public boolean isIssueOpen(int issueId) {
+    return true;
   }
 }

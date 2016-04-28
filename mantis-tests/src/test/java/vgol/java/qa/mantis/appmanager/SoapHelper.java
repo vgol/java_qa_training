@@ -15,15 +15,19 @@ import java.util.stream.Collectors;
 
 public class SoapHelper {
 
+  private final String adminLogin;
+  private final String adminPassword;
   private ApplicationManager app;
 
-  public SoapHelper(ApplicationManager app) {
+  SoapHelper(ApplicationManager app) {
     this.app = app;
+    this.adminLogin = app.getProperty("web.adminLogin");
+    this.adminPassword = app.getProperty("web.adminPassword");
   }
 
   public Set<Project> getProjects() throws MalformedURLException, ServiceException, RemoteException {
     MantisConnectPortType mc = getMantisConnect();
-    ProjectData[] projects = mc.mc_projects_get_user_accessible("administrator", "root");
+    ProjectData[] projects = mc.mc_projects_get_user_accessible(adminLogin, adminPassword);
     return Arrays.asList(projects).stream()
             .map((p) -> new Project().withId(p.getId().intValue()).withName(p.getName()))
             .collect(Collectors.toSet());
@@ -31,7 +35,7 @@ public class SoapHelper {
 
   private MantisConnectPortType getMantisConnect() throws ServiceException, MalformedURLException {
     return new MantisConnectLocator()
-              .getMantisConnectPort(new URL("http://localhost:8080/mantisbt-1.2.19/api/soap/mantisconnect.php"));
+              .getMantisConnectPort(new URL(app.getProperty("mantis.connect")));
   }
 
   public Issue addIssue(Issue issue) throws MalformedURLException, ServiceException, RemoteException {
@@ -43,8 +47,8 @@ public class SoapHelper {
     issueData.setDescription(issue.getDescription());
     issueData.setProject(new ObjectRef(BigInteger.valueOf(issue.getProject().getId()), issue.getProject().getName()));
     issueData.setCategory(categories[0]);
-    BigInteger issueId = mc.mc_issue_add("administrator", "root", issueData);
-    IssueData createdIssueData = mc.mc_issue_get("administrator", "root", issueId);
+    BigInteger issueId = mc.mc_issue_add(adminLogin, adminPassword, issueData);
+    IssueData createdIssueData = mc.mc_issue_get(adminLogin, adminPassword, issueId);
     return new Issue().withId(createdIssueData.getId().intValue())
             .withSummary(createdIssueData.getSummary()).withDescription(createdIssueData.getDescription())
             .withProject(new Project().withId(createdIssueData.getProject().getId().intValue())
