@@ -21,6 +21,7 @@ public class ApplicationManager {
   private RegistrationHelper registrationHelper;
   private FtpHelper ftp;
   private MailHelper mailHelper;
+  private adminUiHelper adminUiHelper;
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -42,7 +43,7 @@ public class ApplicationManager {
     return new HttpSession(this);
   }
 
-  String getProperty(String key) {
+  public String getProperty(String key) {
     return properties.getProperty(key);
   }
 
@@ -89,6 +90,17 @@ public class ApplicationManager {
       mailHelper = new MailHelper(this);
     }
     return mailHelper;
+  }
+
+  public adminUiHelper adminUi() {
+    if (adminUiHelper == null) {
+      adminUiHelper = new adminUiHelper(this);
+    }
+    return adminUiHelper;
+  }
+
+  public DbHelper db() {
+    return new DbHelper();
   }
 }
 
