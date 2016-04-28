@@ -9,11 +9,13 @@ import vgol.java.qa.mantis.appmanager.ApplicationManager;
 import vgol.java.qa.mantis.model.MailMessage;
 import vgol.java.qa.mantis.model.MantisUser;
 
+import javax.xml.rpc.ServiceException;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class TestBase {
 
@@ -47,13 +49,14 @@ public class TestBase {
     return regex.getText(mailMessage.text);
   }
 
-  public void skipIfNotFixed(int issueId) {
+  void skipIfNotFixed(int issueId) throws MalformedURLException, ServiceException, RemoteException {
     if (isIssueOpen(issueId)) {
       throw new SkipException("Ignored because of issue " + issueId);
     }
   }
 
-  public boolean isIssueOpen(int issueId) {
-    return true;
+  private boolean isIssueOpen(int issueId) throws MalformedURLException, ServiceException, RemoteException {
+    String status = app.soap().getIssueStatus(issueId);
+    return !(status.equals("resolved") || status.equals("closed"));
   }
 }

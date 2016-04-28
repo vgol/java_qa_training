@@ -32,8 +32,8 @@ public class SoapTests extends TestBase {
   }
 
   @Test
-  public void testIntegrationWithMantis() {
-    skipIfNotFixed(1);
+  public void testIntegrationWithMantis() throws MalformedURLException, ServiceException, RemoteException {
+    skipIfNotFixed(Integer.parseInt(app.getProperty("mantis.checkIssue")));
     System.out.println("This test does absolutely nothing.");
   }
 }
